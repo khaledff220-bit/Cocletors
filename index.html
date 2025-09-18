@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CalcMaster Pro - آلة حاسبة ذكية متطورة مع واجهة حديثة، أدوات رياضية متقدمة، وحل معادلات مع تاريخ حسابات وميزات تحويل الوحدات.">
+    <title>CalcMaster Pro - Smart Calculator</title>
+    <style>
+        :root {
+            --primary-color: #2E86DE;
+            --secondary-color: #FF9F1C;
+            --bg-light: #F8F9FA;
+            --text-light: #2D3436;
+            --bg-dark: #2D3436;
+            --text-dark: #F8F9FA;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+            padding: 10px;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .calculator-container {
+            max-width: 360px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        body.dark-mode .calculator-container {
+            background: #3A3F44;
+        }
+
+        .display {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: right;
+            font-size: 2em;
+            min-height: 80px;
+            word-wrap: break-word;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+        }
+
+        body.dark-mode .buttons {
+            background-color: #555;
+        }
+
+        .btn {
+            border: none;
+            padding: 20px;
+            font-size: 1.2em;
+            background: white;
+            cursor: pointer;
+            transition: background 0.2s;
+            min-height: 70px;
+        }
+
+        body.dark-mode .btn {
+            background: #4A4F54;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #f1f1f1;
+        }
+
+        body.dark-mode .btn:hover {
+            background: #5A5F64;
+        }
+
+        .operator {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        body.dark-mode .operator {
+            background-color: #5A5F64;
+        }
+
+        .equals {
+            background-color: var(--secondary-color);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .history-container {
+            max-width: 360px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .history-container {
+            background: #3A3F44;
+        }
+
+        .history-container h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        #history-list {
+            list-style-type: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #history-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode #history-list li {
+            border-bottom: 1px solid #555;
+        }
+
+        @media (max-width: 400px) {
+            .calculator-container,
+            .history-container {
+                max-width: 100%;
+            }
+            
+            .btn {
+                padding: 15px;
+                min-height: 60px;
+            }
+            
+            .display {
+                font-size: 1.7em;
+                min-height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mode-toggle" onclick="toggleDarkMode()">🌙</button>
+    
+    <div class="header">
+        <h1>CalcMaster Pro</h1>
+    </div>
+    
+    <div class="calculator-container">
+        <div class="display" id="display">0</div>
+        
+        <div class="buttons">
+            <button class="btn" onclick="clearDisplay()">C</button>
+            <button class="btn" onclick="deleteLast()">⌫</button>
+            <button class="btn" onclick="toggleSign()">±</button>
+            <button class="btn operator" onclick="chooseOperation('/')">/</button>
+            
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn operator" onclick="chooseOperation('*')">×</button>
+            
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn operator" onclick="chooseOperation('-')">-</button>
+            
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <button class="btn operator" onclick="chooseOperation('+')" style="grid-row: span 2;">+</button>
+            
+            <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="appendNumber('.')">.</button>
+            
+            <button class="btn" onclick="calculatePercentage()">%</button>
+            <button class="btn equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+    
+    <div class="history-container">
+        <h3>تاريخ الحسابات <button style="float: right; background: #ff4757; color: white; border: none; padding: 3px 8px; border-radius: 3px; cursor: pointer;" onclick="clearHistory()">مسح</button></h3>
+        <ul id="history-list"></ul>
+    </div>
+
+    <script>
+        let currentInput = '0';
+        let previousInput = '';
+        let operation = null;
+        let shouldResetScreen = false;
+        let calculationHistory = [];
+
+        const display = document.getElementById('display');
+        const historyList = document.getElementById('history-list');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDisplay();
+            loadHistory();
+            
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' || shouldResetScreen) {
+                currentInput = number;
+                shouldResetScreen = false;
+            } else {
+                if (number === '.' && currentInput.includes('.')) return;
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function chooseOperation(op) {
+            if (currentInput === '0') return;
+            
+            if (operation !== null) {
+                calculate();
+            }
+            
+            previousInput = currentInput;
+            operation = op;
+            shouldResetScreen = true;
+        }
+
+        function calculate() {
+            let computation;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+            
+            if (isNaN(prev) || isNaN(current)) return;
+            
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        currentInput = 'Error';
+                        updateDisplay();
+                        return;
+                    }
+                    computation = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            
+            computation = Math.round(computation * 100000000) / 100000000;
+            
+            const calculationString = `${previousInput} ${operation} ${currentInput} = ${computation}`;
+            addToHistory(calculationString);
+            
+            currentInput = computation.toString();
+            operation = null;
+            previousInput = '';
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            previousInput = '';
+            operation = null;
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (currentInput.length === 1) {
+                currentInput = '0';
+            } else {
+                currentInput = currentInput.slice(0, -1);
+            }
+            updateDisplay();
+        }
+
+        function addToHistory(calculation) {
+            calculationHistory.unshift(calculation);
+            if (calculationHistory.length > 10) {
+                calculationHistory.pop();
+            }
+            saveHistory();
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            historyList.innerHTML = '';
+            calculationHistory.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                historyList.appendChild(li);
+            });
+        }
+
+        function saveHistory() {
+            localStorage.setItem('calcHistory', JSON.stringify(calculationHistory));
+        }
+
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('calcHistory');
+            if (savedHistory) {
+                calculationHistory = JSON.parse(savedHistory);
+                updateHistoryDisplay();
+            }
+        }
+
+        function clearHistory() {
+            calculationHistory = [];
+            saveHistory();
+            updateHistoryDisplay();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+
+        function calculatePercentage() {
+            const current = parseFloat(currentInput);
+            if (!isNaN(current)) {
+                currentInput = (current / 100).toString();
+                updateDisplay();
+            }
+        }
+
+        function toggleSign() {
+            if (currentInput !== '0') {
+                if (currentInput.startsWith('-')) {
+                    currentInput = currentInput.substring(1);
+                } else {
+                    currentInput = '-' + currentInput;
+                }
+                updateDisplay();
+            }
+        }
+    </script>
+</body>
+</html>

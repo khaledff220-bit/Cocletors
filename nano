@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Sitemap: http://localhost:3000/sitemap.xml
+
+# إحصاءات التطبيق
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# أوقات الزحف (بالثواني)
+Crawl-delay: 1
