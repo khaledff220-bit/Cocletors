@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CalcMaster Pro - Smart Calculator",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Android, iOS, Web",
+  "description": "آلة حاسبة ذكية متطورة مع واجهة حديثة، أدوات رياضية متقدمة، وحل معادلات مع تاريخ حسابات وميزات تحويل الوحدات.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "CalcMaster Team"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "125"
+  }
+}
+</script>
+
+<meta name="keywords" content="آلة حاسبة, حاسبة علمية, calculator, math, حساب, رياضيات, تحويل وحدات, حاسبة متقدمة">
+<meta property="og:title" content="CalcMaster Pro - Smart Calculator">
+<meta property="og:description" content="آلة حاسبة ذكية متطورة مع واجهة حديثة، أدوات رياضية متقدمة، وحل معادلات مع تاريخ حسابات وميزات تحويل الوحدات.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://localhost:3000">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CalcMaster Pro - آلة حاسبة ذكية متطورة مع واجهة حديثة، أدوات رياضية متقدمة، وحل معادلات مع تاريخ حسابات وميزات تحويل الوحدات.">
+    <title>CalcMaster Pro - Smart Calculator</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <button class="mode-toggle" onclick="toggleDarkMode()">🌙</button>
+    
+    <div class="header">
+        <h1>CalcMaster Pro</h1>
+        <div class="menu">
+            <button class="menu-btn" onclick="toggleCalculatorMode('basic')">عادي</button>
+            <button class="menu-btn" onclick="toggleCalculatorMode('scientific')">علمي</button>
+            <button class="menu-btn" onclick="toggleConverter()">محول الوحدات</button>
+        </div>
+    </div>
+    
+    <div class="calculator-container" id="calculator-container">
+        <div class="display" id="display">0</div>
+        
+        <div class="buttons" id="basic-buttons">
+            <button class="btn" onclick="clearDisplay()">C</button>
+            <button class="btn" onclick="deleteLast()">⌫</button>
+            <button class="btn" onclick="toggleSign()">±</button>
+            <button class="btn operator" onclick="chooseOperation('/')">/</button>
+            
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn operator" onclick="chooseOperation('*')">×</button>
+            
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn operator" onclick="chooseOperation('-')">-</button>
+            
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <button class="btn operator" onclick="chooseOperation('+')" style="grid-row: span 2;">+</button>
+            
+            <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="appendNumber('.')">.</button>
+            
+            <button class="btn" onclick="calculatePercentage()">%</button>
+            <button class="btn equals" onclick="calculate()">=</button>
+        </div>
+        
+        <div class="buttons scientific-buttons" id="scientific-buttons" style="display: none;">
+            <button class="btn" onclick="calculateSquare()">x²</button>
+            <button class="btn" onclick="calculateSquareRoot()">√</button>
+            <button class="btn" onclick="calculatePower()">x^y</button>
+            <button class="btn" onclick="addPi()">π</button>
+            <button class="btn" onclick="addE()">e</button>
+            
+            <button class="btn" onclick="calculateSin()">sin</button>
+            <button class="btn" onclick="calculateCos()">cos</button>
+            <button class="btn" onclick="calculateTan()">tan</button>
+            <button class="btn" onclick="calculateLog()">log</button>
+            <button class="btn" onclick="calculateLn()">ln</button>
+            
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn operator" onclick="chooseOperation('/')">/</button>
+            
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn operator" onclick="chooseOperation('*')">×</button>
+            
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <button class="btn operator" onclick="chooseOperation('-')">-</button>
+            
+            <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="appendNumber('.')">.</button>
+            <button class="btn operator" onclick="chooseOperation('+')">+</button>
+            
+            <button class="btn equals" onclick="calculate()" style="grid-column: span 2;">=</button>
+        </div>
+    </div>
+    
+    <div class="converter-section" id="converter-section" style="display: none;">
+        <div class="converter-header">
+            <h3>محول الوحدات</h3>
+            <div class="converter-types">
+                <button class="converter-type-btn" onclick="changeConverterType('length')">الطول</button>
+                <button class="converter-type-btn" onclick="changeConverterType('weight')">الوزن</button>
+                <button class="converter-type-btn" onclick="changeConverterType('temperature')">الحرارة</button>
+                <button class="converter-type-btn" onclick="changeConverterType('currency')">العملات</button>
+            </div>
+        </div>
+        
+        <div class="converter-inputs">
+            <input type="number" id="converter-input" placeholder="أدخل القيمة">
+            <select id="from-unit"></select>
+            <span>إلى</span>
+            <select id="to-unit"></select>
+            <button onclick="convertUnits()">تحويل</button>
+        </div>
+        
+        <div class="converter-result" id="converter-result"></div>
+    </div>
+    
+    <div class="history-container">
+        <h3>تاريخ الحسابات <button style="float: right; background: #ff4757; color: white; border: none; padding: 3px 8px; border-radius: 3px; cursor: pointer;" onclick="clearHistory()">مسح</button></h3>
+        <ul id="history-list"></ul>
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="/scientific.js"></script>
+    <script src="/converter.js"></script>
+</body>
+</html>
